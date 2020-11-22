@@ -4,25 +4,29 @@ from random import randint
 from PyQt5 import uic
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from task2.task2.UI import Ui_MainWindow
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
-        super().__init__()
-        uic.loadUi("UI.ui", self)
+        super(MainWindow, self).__init__()
+        self.setupUi(self)
         self.pushButton.clicked.connect(self.paint)
+        self.can_draw = False
 
     def paintEvent(self, event):
-        qp = QPainter()
-        qp.begin(self)
-        self.drawCircle(qp)
-        qp.end()
+        if self.can_draw:
+            qp = QPainter()
+            qp.begin(self)
+            self.drawCircle(qp)
+            qp.end()
 
     def paint(self):
+        self.can_draw = True
         self.repaint()
 
     def drawCircle(self, qp):
-        qp.setPen(QColor(255, 255, 0))
+        qp.setPen(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
         n = randint(1, 4)
         for _ in range(n):
             rad = randint(5, 200)
